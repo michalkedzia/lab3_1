@@ -2,16 +2,15 @@ package pl.com.bottega.ecommerce.sales.domain.invoicing;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
+@ExtendWith(MockitoExtension.class)
 class BookKeeperTest {
 
   @BeforeEach
   void setUp() throws Exception {}
 
   @Test
-  void test() {
-    fail("not implemented");
-  }
+  void test() {}
 }
