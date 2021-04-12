@@ -1,11 +1,11 @@
 package pl.com.bottega.ecommerce.sales.domain.productscatalog;
 
-import java.util.List;
-
 import pl.com.bottega.ecommerce.canonicalmodel.publishedlanguage.Id;
 
-public interface ProductRepository {
-	public Product load(Id productId);
+import java.util.List;
 
-	public List<Product> findProductWhereBestBeforeExpiredIn(int days);
+public interface ProductRepository {
+  Product load(Id productId);
+
+  List<Product> findProductWhereBestBeforeExpiredIn(int days);
 }

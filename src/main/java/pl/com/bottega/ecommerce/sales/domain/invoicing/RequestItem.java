@@ -20,28 +20,27 @@ import pl.com.bottega.ecommerce.sharedkernel.Money;
 
 class RequestItem {
 
-	private ProductData productData;
+  private final ProductData productData;
 
-	private int quantity;
+  private final int quantity;
 
-	private Money totalCost;
+  private final Money totalCost;
 
-	public RequestItem(ProductData productData, int quantity, Money totalCost) {
-		this.productData = productData;
-		this.quantity = quantity;
-		this.totalCost = totalCost;
-	}
+  public RequestItem(ProductData productData, int quantity, Money totalCost) {
+    this.productData = productData;
+    this.quantity = quantity;
+    this.totalCost = totalCost;
+  }
 
-	public Money getTotalCost() {
-		return totalCost;
-	}
+  public Money getTotalCost() {
+    return totalCost;
+  }
 
-	public ProductData getProductData() {
-		return productData;
-	}
+  public ProductData getProductData() {
+    return productData;
+  }
 
-	public int getQuantity() {
-		return quantity;
-	}
-
+  public int getQuantity() {
+    return quantity;
+  }
 }

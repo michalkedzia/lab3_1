@@ -16,35 +16,34 @@ import java.util.Objects;
 
 public class ClientData {
 
-    private Id id;
+  private final Id id;
 
-    private String name;
+  private final String name;
 
-    public ClientData(Id id, String name) {
-        this.id = id;
-        this.name = name;
+  public ClientData(Id id, String name) {
+    this.id = id;
+    this.name = name;
+  }
+
+  public Id getAggregateId() {
+    return id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(id);
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (object instanceof ClientData) {
+      ClientData that = (ClientData) object;
+      return Objects.equals(this.id, that.id);
     }
-
-    public Id getAggregateId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (object instanceof ClientData) {
-            ClientData that = (ClientData) object;
-            return Objects.equals(this.id, that.id);
-        }
-        return false;
-    }
-
+    return false;
+  }
 }

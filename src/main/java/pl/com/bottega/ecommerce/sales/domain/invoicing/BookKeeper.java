@@ -16,26 +16,24 @@ import pl.com.bottega.ecommerce.sharedkernel.Money;
 
 public class BookKeeper {
 
-    private InvoiceFactory invoiceFactory;
+  private final InvoiceFactory invoiceFactory;
 
-    public BookKeeper(InvoiceFactory invoiceFactory) {
-        this.invoiceFactory = invoiceFactory;
+  public BookKeeper(InvoiceFactory invoiceFactory) {
+    this.invoiceFactory = invoiceFactory;
+  }
+
+  public Invoice issuance(InvoiceRequest invoiceRequest, TaxPolicy taxPolicy) {
+    Invoice invoice = invoiceFactory.create(invoiceRequest.getClient());
+
+    for (RequestItem item : invoiceRequest.getItems()) {
+      Money net = item.getTotalCost();
+      Tax tax = taxPolicy.calculateTax(item.getProductData().getType(), net);
+
+      InvoiceLine invoiceLine =
+          new InvoiceLine(item.getProductData(), item.getQuantity(), net, tax);
+      invoice.addItem(invoiceLine);
     }
 
-    public Invoice issuance(InvoiceRequest invoiceRequest, TaxPolicy taxPolicy) {
-        Invoice invoice = invoiceFactory.create(invoiceRequest.getClient());
-
-        for (RequestItem item : invoiceRequest.getItems()) {
-            Money net = item.getTotalCost();
-            Tax tax = taxPolicy.calculateTax(item.getProductData()
-                                                 .getType(),
-                    net);
-
-            InvoiceLine invoiceLine = new InvoiceLine(item.getProductData(), item.getQuantity(), net, tax);
-            invoice.addItem(invoiceLine);
-        }
-
-        return invoice;
-    }
-
+    return invoice;
+  }
 }

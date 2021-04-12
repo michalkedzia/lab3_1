@@ -12,55 +12,54 @@
  */
 package pl.com.bottega.ecommerce.canonicalmodel.publishedlanguage;
 
+import org.apache.commons.lang3.Validate;
+
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.apache.commons.lang3.Validate;
-
 public class Id implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    private String id;
+  private static final long serialVersionUID = 1L;
+  private String id;
 
-    public Id(String id) {
-        Validate.notNull(id);
-        this.id = id;
+  public Id(String id) {
+    Validate.notNull(id);
+    this.id = id;
+  }
+
+  protected Id() {}
+
+  public static Id generate() {
+    return new Id(UUID.randomUUID().toString());
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
-
-    protected Id() {}
-
-    public static Id generate() {
-        return new Id(UUID.randomUUID()
-                          .toString());
+    if (obj == null) {
+      return false;
     }
-
-    public String getId() {
-        return id;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
+    Id other = (Id) obj;
+    return Objects.equals(id, other.id);
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        Id other = (Id) obj;
-        return Objects.equals(id, other.id);
-    }
-
-    @Override
-    public String toString() {
-        return id;
-    }
+  @Override
+  public String toString() {
+    return id;
+  }
 }

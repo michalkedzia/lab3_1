@@ -20,13 +20,12 @@ import pl.com.bottega.ecommerce.sharedkernel.Money;
 
 public interface TaxPolicy {
 
-	/**
-	 * calculates tax per product type based on net value
-	 * 
-	 * @param productType
-	 * @param net
-	 * @return
-	 */
-	public Tax calculateTax(ProductType productType, Money net);
-
+  /**
+   * calculates tax per product type based on net value
+   *
+   * @param productType
+   * @param net
+   * @return
+   */
+  Tax calculateTax(ProductType productType, Money net);
 }
