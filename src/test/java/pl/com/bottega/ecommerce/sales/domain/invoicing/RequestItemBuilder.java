@@ -4,6 +4,8 @@ import pl.com.bottega.ecommerce.sales.domain.productscatalog.ProductData;
 import pl.com.bottega.ecommerce.sales.domain.productscatalog.ProductDataBuilder;
 import pl.com.bottega.ecommerce.sharedkernel.Money;
 
+import java.util.List;
+
 public class RequestItemBuilder {
   private ProductData productData = new ProductDataBuilder().build();
   private int quantity = 4;
@@ -11,6 +13,10 @@ public class RequestItemBuilder {
 
   public RequestItem build() {
     return new RequestItem(productData, quantity, totalCost);
+  }
+
+  public List<RequestItem> buildToList() {
+    return List.of(new RequestItem(productData, quantity, totalCost));
   }
 
   public RequestItemBuilder withProductData(ProductData productData) {
