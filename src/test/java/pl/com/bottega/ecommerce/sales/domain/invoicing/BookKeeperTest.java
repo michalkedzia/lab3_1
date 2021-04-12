@@ -138,4 +138,31 @@ class BookKeeperTest {
     Mockito.verify(taxPolicy, Mockito.times(0)).calculateTax(Mockito.any(), Mockito.any());
     Assertions.assertEquals(issuance.getItems().size(), 0);
   }
+
+  @Test
+  void expected_calling_method_calculateTax_two_times_with_tax_correct_description() {
+    // Given
+    final String TAX_DESCRIPTION = "TAX";
+    ClientData clientData = new ClientDataBuilder().build();
+    List<RequestItem> requestItems = new RequestItemBuilder().buildToList();
+    requestItems.add(new RequestItemBuilder().build());
+
+    InvoiceRequest invoiceRequest =
+        new InvoiceRequestBuilder().withItems(requestItems).withClient(clientData).build();
+
+    Mockito.when(invoiceFactory.create(clientData))
+        .thenReturn(new Invoice(Id.generate(), clientData));
+    Mockito.when(taxPolicy.calculateTax(Mockito.any(), Mockito.any()))
+        .thenReturn(new Tax(new MoneyBuilder().build(), TAX_DESCRIPTION));
+
+    // When
+    Invoice issuance = bookKeeper.issuance(invoiceRequest, taxPolicy);
+
+    // Then
+    Mockito.verify(taxPolicy, Mockito.times(2)).calculateTax(Mockito.any(), Mockito.any());
+    Assertions.assertEquals(issuance.getItems().size(), 2);
+
+    Assertions.assertEquals(issuance.getItems().get(0).getTax().getDescription(), TAX_DESCRIPTION);
+    Assertions.assertEquals(issuance.getItems().get(1).getTax().getDescription(), TAX_DESCRIPTION);
+  }
 }
