@@ -120,4 +120,22 @@ class BookKeeperTest {
     // Then
     Assertions.assertEquals(issuance.getItems().size(), 30);
   }
+
+  @Test
+  void expected_calling_method_calculateTax_zero_times() {
+    // Given
+    ClientData clientData = new ClientDataBuilder().build();
+    List<RequestItem> requestItems = new ArrayList<>();
+    InvoiceRequest invoiceRequest =
+        new InvoiceRequestBuilder().withItems(requestItems).withClient(clientData).build();
+    Mockito.when(invoiceFactory.create(clientData))
+        .thenReturn(new Invoice(Id.generate(), clientData));
+
+    // When
+    Invoice issuance = bookKeeper.issuance(invoiceRequest, taxPolicy);
+
+    // Then
+    Mockito.verify(taxPolicy, Mockito.times(0)).calculateTax(Mockito.any(), Mockito.any());
+    Assertions.assertEquals(issuance.getItems().size(), 0);
+  }
 }
