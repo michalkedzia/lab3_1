@@ -11,6 +11,7 @@ import pl.com.bottega.ecommerce.canonicalmodel.publishedlanguage.ClientData;
 import pl.com.bottega.ecommerce.canonicalmodel.publishedlanguage.Id;
 import pl.com.bottega.ecommerce.sharedkernel.MoneyBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
@@ -76,5 +77,47 @@ class BookKeeperTest {
     Assertions.assertEquals(
         issuance.getItems().get(1).getProduct().getName(),
         requestItems.get(1).getProductData().getName());
+  }
+
+  @Test
+  void expected_invoice_with_no_item() {
+    // Given
+    ClientData clientData = new ClientDataBuilder().build();
+    List<RequestItem> requestItems = new ArrayList<>();
+    InvoiceRequest invoiceRequest =
+        new InvoiceRequestBuilder().withItems(requestItems).withClient(clientData).build();
+    Mockito.when(invoiceFactory.create(clientData))
+        .thenReturn(new Invoice(Id.generate(), clientData));
+
+    // When
+    Invoice issuance = bookKeeper.issuance(invoiceRequest, taxPolicy);
+
+    // Then
+    Assertions.assertEquals(issuance.getItems().size(), 0);
+  }
+
+  @Test
+  void expected_invoice_with_thirty_item() {
+    // Given
+    int ITEMS = 30;
+    ClientData clientData = new ClientDataBuilder().build();
+    List<RequestItem> requestItems = new ArrayList<>();
+    for (int i = 0; i < ITEMS; i++) {
+      requestItems.add(new RequestItemBuilder().build());
+    }
+
+    InvoiceRequest invoiceRequest =
+        new InvoiceRequestBuilder().withItems(requestItems).withClient(clientData).build();
+
+    Mockito.when(invoiceFactory.create(clientData))
+        .thenReturn(new Invoice(Id.generate(), clientData));
+    Mockito.when(taxPolicy.calculateTax(Mockito.any(), Mockito.any()))
+        .thenReturn(new Tax(new MoneyBuilder().build(), "desc"));
+
+    // When
+    Invoice issuance = bookKeeper.issuance(invoiceRequest, taxPolicy);
+
+    // Then
+    Assertions.assertEquals(issuance.getItems().size(), 30);
   }
 }
